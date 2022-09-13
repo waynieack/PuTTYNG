@@ -1191,15 +1191,27 @@ static void wintw_set_raw_mouse_mode_pointer(TermWin *tw, bool activate)
 static void win_seat_connection_fatal(Seat *seat, const char *msg)
 {
     char *title = dupprintf("%s Fatal Error", appname);
-    show_mouseptr(true);
-    MessageBox(wgs.term_hwnd, msg, title, MB_ICONERROR | MB_OK);
-    sfree(title);
-
-    if (conf_get_int(conf, CONF_close_on_exit) == FORCE_ON)
+ 
+    if (conf_get_int(conf, CONF_close_on_exit) == FORCE_ON) {
+        //show MessageBox before closing the PuTTY-Window
+        show_mouseptr(true);
+        MessageBox(wgs.term_hwnd, msg, title, MB_ICONERROR | MB_OK);
+ 
         PostQuitMessage(1);
-    else {
+    } else {
+        //print message into the PuTTY-Console
+        win_seat_output(seat,true,"\r\n\r\n",4);
+        win_seat_output(seat,0,"------------------- ",20);
+        win_seat_output(seat,0,title,strlen(title));
+        win_seat_output(seat,0," ------------------\r\n",22);
+        win_seat_output(seat,0,"- ",2);
+        win_seat_output(seat,0,msg,strlen(msg));
+        win_seat_output(seat,0,"\r\n\r\n",4);
+ 
         queue_toplevel_callback(close_session, NULL);
     }
+ 
+    sfree(title);
 }
 
 /*

@@ -1,11 +1,13 @@
 # PuTTYNG
 
-This is a modieifed version of [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) from [Simon Tatham](https://www.chiark.greenend.org.uk/~sgtatham/) to be used with [mRemoteNG](https://mremoteng.org/).
+This is a modified version of [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) from [Simon Tatham](https://www.chiark.greenend.org.uk/~sgtatham/) to be used with [mRemoteNG](https://mremoteng.org/).
 
-| Branch | Build |
-|:-----------------: |:-------------------:|
-| `Main` | [![Build status](https://ci.appveyor.com/api/projects/status/lbux84r7mt5fh4ar/branch/master?svg=true)](https://ci.appveyor.com/project/mremoteng/puttyng/branch/main) |
-| `Develop` | [![Build status](https://ci.appveyor.com/api/projects/status/lbux84r7mt5fh4ar/branch/master?svg=true)](https://ci.appveyor.com/project/mremoteng/puttyng/branch/develop) |
+This version removes the "Connection lost" popup and just writes a message to the terminal. 
+
+IE:
+------------------- PuTTYNG Fatal Error ------------------
+- Network error: Software caused connection abort
+
 
 **The following files within the project were modified:**
 - BE_ALL_S.C
@@ -21,12 +23,25 @@ This is a modieifed version of [PuTTY](https://www.chiark.greenend.org.uk/~sgtat
 - rename putty.exe to puttyng.exe
 - change the "all" target to only build puttyng.exe
 
-**To update PuTTYNG from the original repository:**
-- git remote add putty https://git.tartarus.org/simon/putty.git
-- git fetch --tags
-- git remote update putty
-- git checkout master
-- git merge tags/0.76
-- git push master
 
-After that create a new tag from within GitHub to trigger the AppVeyor release build.
+
+For building on Windows:
+
+ - windows/MAKEFILE.NG is for command-line builds on MS Visual C++
+   systems. Change into the `windows' subdirectory and type `nmake
+   -f MAKEFILE.NG' to build all the PuTTY binaries.
+
+   Last time we checked, PuTTY built with vanilla VC7, or VC6 with
+   an up-to-date Platform SDK. (It might still be possible to build
+   with vanilla VC6, but you'll certainly have to remove some
+   functionality with directives such as NO_IPV6.)
+
+
+To install for mRemoteNG:
+
+ - Copy the compiled PuTTYNG.exe file to a directory on your root drive. IE: "C:\Program Files (x86)\putty" 
+   - You can compile yourself or use the precompiled version in the bin directory.
+ - Update the mRemoteNG configuration with the new putty version: Tools > Options > Advanced > Use Custom Putty Path
+ - Browse to the location where you copied the new putty binary. IE: "C:\Program Files (x86)\putty\PuTTYNG.exe"  
+
+
